@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Sensor {
+  id                Int             @id @default(autoincrement())
+  tipo              String
+  EspacioVerde      EspacioVerde    @relation(fields: [espacioVerdeId], references: [id])
+  espacioVerdeId    Int
+  Edificio          Edificio        @relation(fields: [edificioId], references: [id])
+  edificioId        Int
+  Aula              Aula            @relation(fields: [aulaId], references: [id])
+  aulaId            Int
+  Parking           Parking         @relation(fields: [parkingId], references: [id])
+  parkingId         Int
+  Estacionamiento   Estacionamiento @relation(fields: [estacionamientoId], references: [id])
+  estacionamientoId Int
+}
+
+model EspacioVerde {
+  id       Int      @id @default(autoincrement())
+  nombre   String   @unique
+  tipo     String
+  sensores Sensor[]
+}
+
+model Edificio {
+  id       Int      @id @default(autoincrement())
+  nombre   String   @unique
+  tipo     String
+  sensores Sensor[]
+  aulas    Aula[]
+}
+
+model Aula {
+  id         Int      @id @default(autoincrement())
+  nombre     String   @unique
+  tipo       String
+  sensores   Sensor[]
+  Edificio   Edificio @relation(fields: [edificioId], references: [id])
+  edificioId Int
+}
+
+model Parking {
+  id               Int               @id @default(autoincrement())
+  nombre           String            @unique
+  tipo             String
+  sensores         Sensor[]
+  estacionamientos Estacionamiento[]
+}
+
+model Estacionamiento {
+  id        Int      @id @default(autoincrement())
+  nombre    String   @unique
+  tipo      String
+  sensores  Sensor[]
+  Parking   Parking  @relation(fields: [parkingId], references: [id])
+  parkingId Int
+}
