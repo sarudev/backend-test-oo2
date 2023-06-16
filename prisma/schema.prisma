@@ -10,19 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  username String
+  password String
+  role     String
+}
+
 model Sensor {
-  id                Int             @id @default(autoincrement())
+  id                Int              @id @default(autoincrement())
   tipo              String
-  EspacioVerde      EspacioVerde    @relation(fields: [espacioVerdeId], references: [id])
-  espacioVerdeId    Int
-  Edificio          Edificio        @relation(fields: [edificioId], references: [id])
-  edificioId        Int
-  Aula              Aula            @relation(fields: [aulaId], references: [id])
-  aulaId            Int
-  Parking           Parking         @relation(fields: [parkingId], references: [id])
-  parkingId         Int
-  Estacionamiento   Estacionamiento @relation(fields: [estacionamientoId], references: [id])
-  estacionamientoId Int
+  edificioTipo      String
+  activo            Boolean?         @default(false)
+  EspacioVerde      EspacioVerde?    @relation(fields: [espacioVerdeId], references: [id])
+  espacioVerdeId    Int?
+  Edificio          Edificio?        @relation(fields: [edificioId], references: [id])
+  edificioId        Int?
+  Aula              Aula?            @relation(fields: [aulaId], references: [id])
+  aulaId            Int?
+  Parking           Parking?         @relation(fields: [parkingId], references: [id])
+  parkingId         Int?
+  Estacionamiento   Estacionamiento? @relation(fields: [estacionamientoId], references: [id])
+  estacionamientoId Int?
+}
+
+model Historial {
+  id           Int      @id @default(autoincrement())
+  sensorTipo   String
+  edificioTipo String
+  fecha        DateTime
+  descripcion  String
+
+  EspacioVerde      EspacioVerde?    @relation(fields: [espacioVerdeId], references: [id])
+  espacioVerdeId    Int?
+  Edificio          Edificio?        @relation(fields: [edificioId], references: [id])
+  edificioId        Int?
+  Aula              Aula?            @relation(fields: [aulaId], references: [id])
+  aulaId            Int?
+  Parking           Parking?         @relation(fields: [parkingId], references: [id])
+  parkingId         Int?
+  Estacionamiento   Estacionamiento? @relation(fields: [estacionamientoId], references: [id])
+  estacionamientoId Int?
 }
 
 model EspacioVerde {
@@ -30,6 +58,8 @@ model EspacioVerde {
   nombre   String   @unique
   tipo     String
   sensores Sensor[]
+
+  historial Historial[]
 }
 
 model Edificio {
@@ -38,15 +68,19 @@ model Edificio {
   tipo     String
   sensores Sensor[]
   aulas    Aula[]
+
+  historial Historial[]
 }
 
 model Aula {
-  id         Int      @id @default(autoincrement())
-  nombre     String   @unique
-  tipo       String
-  sensores   Sensor[]
-  Edificio   Edificio @relation(fields: [edificioId], references: [id])
-  edificioId Int
+  id       Int      @id @default(autoincrement())
+  nombre   String   @unique
+  tipo     String
+  sensores Sensor[]
+  lugar    Edificio @relation(fields: [lugarId], references: [id])
+  lugarId  Int
+
+  historial Historial[]
 }
 
 model Parking {
@@ -55,13 +89,17 @@ model Parking {
   tipo             String
   sensores         Sensor[]
   estacionamientos Estacionamiento[]
+
+  historial Historial[]
 }
 
 model Estacionamiento {
-  id        Int      @id @default(autoincrement())
-  nombre    String   @unique
-  tipo      String
-  sensores  Sensor[]
-  Parking   Parking  @relation(fields: [parkingId], references: [id])
-  parkingId Int
+  id       Int      @id @default(autoincrement())
+  nombre   String   @unique
+  tipo     String
+  sensores Sensor[]
+  lugar    Parking  @relation(fields: [lugarId], references: [id])
+  lugarId  Int
+
+  historial Historial[]
 }

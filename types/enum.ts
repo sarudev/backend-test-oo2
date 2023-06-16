@@ -1,4 +1,4 @@
-export enum SensorType {
+export const enum SensorType {
   Temperatura = 'Temperatura',
   Bascula = 'Bascula',
   Humedad = 'Humedad',
@@ -6,7 +6,7 @@ export enum SensorType {
   Tiempo = 'Tiempo'
 }
 
-export enum ILugarTipo {
+export const enum ILugarTipo {
   Aula = 'aula',
   Edificio = 'edificio',
   Parking = 'parking',
@@ -20,4 +20,20 @@ export const LugarDependencia: Record<ILugarTipo, string | null> = {
   espacioVerde: null,
   aula: null,
   estacionamiento: null
+}
+
+export const enum Routes {
+  PostAulaSensor = '/edificio/:buildingName/aula/:aulaName/sensor',
+  PostAula = '/edificio/:buildingName/aula',
+  GetAula = '/edificio/:buildingName/aula/:aulaName',
+
+  PostEdificioSensor = '/edificio/:buildingName/sensor',
+  GetEdificio = '/edificio/:buildingName',
+
+  PutEdificioSensor = '/edificio/:buildingName/sensor',
+  PutAulaSensor = '/edificio/:buildingName/aula/:aulaName/sensor',
+
+  Login = '/login',
+  UserRole = '/userRole/:username',
+  Logout = '/logout'
 }
