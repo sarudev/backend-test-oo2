@@ -37,3 +37,16 @@ export const enum Routes {
   UserRole = '/userRole/:username',
   Logout = '/logout'
 }
+
+export type UserRoleString = 'admin' | 'user'
+
+export const enum UserRole {
+  User,
+  Admin
+}
+
+export function hasRole (role: UserRoleString) {
+  if (role === 'user') return UserRole.User
+  else if (role === 'admin') return UserRole.Admin
+  return null
+}

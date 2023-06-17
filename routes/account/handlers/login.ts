@@ -30,7 +30,7 @@ export const login = (async (req, res) => {
     return
   }
 
-  const token = jwt.sign({ userId: user.id, username: user.username }, secret)
-
-  res.status(200).cookie('JWT', token, { httpOnly: true }).send()
+  const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, secret)
+  console.log({ username, password, token })
+  res.status(200).cookie('token', token, { httpOnly: true }).send({ message: 'Logged in' })
 }) as RequestHandler
