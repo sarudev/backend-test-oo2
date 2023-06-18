@@ -59,3 +59,9 @@ export interface IHistorial {
   mensaje: string
   fecha: number
 }
+
+export interface UserData {
+  id: number
+  username: string
+  role: string
+}

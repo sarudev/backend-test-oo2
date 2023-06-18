@@ -33,9 +33,10 @@ export const enum Routes {
   PutEdificioSensor = '/edificio/:buildingName/sensor',
   PutAulaSensor = '/edificio/:buildingName/aula/:aulaName/sensor',
 
-  Login = '/login',
-  UserRole = '/userRole/:username',
-  Logout = '/logout'
+  Login = '/account/login',
+  UserRole = '/account/userRole/:username',
+  UserData = '/account/userData',
+  Logout = '/account/logout'
 }
 
 export type UserRoleString = 'admin' | 'user'
