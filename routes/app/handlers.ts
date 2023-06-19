@@ -1,10 +1,10 @@
-import { areCompatible, isBuildingType, isDependencyType } from '../../types/typeguards'
+import { areCompatible, firstUpper, isBuildingType, isDependencyType, isSensor } from '../../types/typeguards'
 import prisma from '../../prisma/client'
 import { type PrismaDependencyCreate, type Lugares, type PrismaFindBuildingFirst, type PrismaFindDependencyFirst, type PrismaFindDependencyMany } from '../../types/types'
 import { type PrismaClientUnknownRequestError } from '@prisma/client/runtime'
 import { type RequestHandler } from 'express'
 
-export const GetLugarAll = (async (req, res, next) => {
+export const GetBuildingAll = (async (req, res, next) => {
   const { buildingType } = req.params
 
   if (!isBuildingType(buildingType)) return next()
@@ -16,7 +16,7 @@ export const GetLugarAll = (async (req, res, next) => {
   res.send(data)
 }) as RequestHandler
 
-export const GetLugar = (async (req, res, next) => {
+export const GetBuilding = (async (req, res, next) => {
   const { buildingType, buildingName } = req.params
 
   if (!isBuildingType(buildingType)) return next()
@@ -44,7 +44,7 @@ export const GetLugar = (async (req, res, next) => {
   res.status(building == null ? 404 : 200).send(building)
 }) as RequestHandler
 
-export const GetLugarDependencyAll = (async (req, res, next) => {
+export const GetDependencyAll = (async (req, res, next) => {
   const { buildingType, buildingName, dependencyType } = req.params
 
   if (!isBuildingType(buildingType) || !isDependencyType(dependencyType)) return next()
@@ -63,7 +63,7 @@ export const GetLugarDependencyAll = (async (req, res, next) => {
   res.send(data)
 }) as RequestHandler
 
-export const GetLugarDependency = (async (req, res, next) => {
+export const GetDependency = (async (req, res, next) => {
   const { buildingType, buildingName, dependencyType, dependencyName } = req.params
 
   if (!isBuildingType(buildingType) || !isDependencyType(dependencyType)) return next()
@@ -88,7 +88,7 @@ export const GetLugarDependency = (async (req, res, next) => {
   res.status(dependency == null ? 404 : 200).send(dependency)
 }) as RequestHandler
 
-export const PutLugarSensor = (async (req, res, next) => {
+export const PutSensor = (async (req, res, next) => {
   const { sensorId, activo } = req.body as { sensorId: number, activo: boolean }
   if (sensorId == null || isNaN(sensorId)) {
     res.status(400).send({ error: '\'sensorId\' is not a number or is missing in request body' })
@@ -111,14 +111,11 @@ export const PutLugarSensor = (async (req, res, next) => {
   res.status(sensor == null ? 404 : 200).send(sensor)
 }) as RequestHandler
 
-export const PostLugarDependency = (async (req, res, next) => {
+export const PostDependency = (async (req, res, next) => {
   const { buildingType, buildingName, dependencyType } = req.params
   const { dependencyName } = req.body
 
-  if (dependencyName == null || typeof dependencyName !== 'string') {
-    res.status(400).send({ error: '\'dependencyName\' is not a string or is missing in request body' })
-    return
-  }
+  if (dependencyName == null || typeof dependencyName !== 'string') return next()
 
   if (!isBuildingType(buildingType) || !isDependencyType(dependencyType)) return next()
   if (!areCompatible(buildingType, dependencyType)) return next()
@@ -140,5 +137,74 @@ export const PostLugarDependency = (async (req, res, next) => {
     res.status(201).json(aula)
   } catch (e: unknown) {
     res.status(409).json((e as PrismaClientUnknownRequestError))
+  }
+}) as RequestHandler
+
+export const PostBuildingSensor = (async (req, res, next) => {
+  const { buildingType, buildingName } = req.params
+  const { sensorType } = req.body
+
+  if (!isBuildingType(buildingType) || !isSensor(sensorType)) return next()
+
+  try {
+    const exist = await prisma.sensor.findFirst({
+      where: {
+        tipo: sensorType,
+        [firstUpper(buildingType)]: {
+          nombre: buildingName!.replaceAll('-', ' ')
+        }
+      }
+    })
+    if (exist != null) throw new Error()
+
+    const sensor = await prisma.sensor.create({
+      data: {
+        edificioTipo: buildingType,
+        tipo: sensorType,
+        [firstUpper(buildingType)]: {
+          connect: {
+            nombre: buildingName!.replaceAll('-', ' ')
+          }
+        }
+      }
+    })
+    res.send(sensor)
+  } catch (e: unknown) {
+    res.status(409).send(e as PrismaClientUnknownRequestError)
+  }
+}) as RequestHandler
+
+export const PostDependencySensor = (async (req, res, next) => {
+  const { buildingType, dependencyType, dependencyName } = req.params
+  const { sensorType } = req.body
+
+  if (!isBuildingType(buildingType) || !isDependencyType(dependencyType) || !isSensor(sensorType)) return next()
+  if (!areCompatible(buildingType, dependencyType)) return next()
+
+  try {
+    const exist = await prisma.sensor.findFirst({
+      where: {
+        tipo: sensorType,
+        [firstUpper(dependencyType)]: {
+          nombre: dependencyName!.replaceAll('-', ' ')
+        }
+      }
+    })
+    if (exist != null) throw new Error()
+
+    const sensor = await prisma.sensor.create({
+      data: {
+        edificioTipo: dependencyType,
+        tipo: sensorType,
+        [firstUpper(dependencyType)]: {
+          connect: {
+            nombre: dependencyName!.replaceAll('-', ' ')
+          }
+        }
+      }
+    })
+    res.send(sensor)
+  } catch (e: unknown) {
+    res.status(409).send(e as PrismaClientUnknownRequestError)
   }
 }) as RequestHandler

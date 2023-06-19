@@ -39,6 +39,8 @@ export const enum Routes {
   Logout = '/account/logout',
 
   PutSensor = '/sensor',
+  PostBuildingSensor = '/:buildingType/:buildingName/sensor',
+  PostDependencySensor = '/:buildingType/:buildingName/:dependencyType/:dependencyName/sensor',
   PostDependency = '/:buildingType/:buildingName/:dependencyType',
   GetBuildingAll = '/:buildingType',
   GetBuilding = '/:buildingType/:buildingName',
