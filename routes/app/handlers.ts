@@ -23,16 +23,23 @@ export const GetLugar = (async (req, res, next) => {
 
   const find = prisma[buildingType].findFirst as unknown as PrismaFindBuildingFirst
 
-  const building = await find({
+  const query = {
     where: {
       nombre: buildingName!.replaceAll('-', ' ')
     },
     include: {
       historial: true,
-      sensores: true,
+      sensores: true
+    }
+  }
+  if (buildingType === 'edificio' || buildingType === 'parking') {
+    query.include = {
+      ...query.include,
       [buildingType === 'edificio' ? 'aulas' : 'estacionamientos']: true
     }
-  }) as Lugares[]
+  }
+
+  const building = await find(query) as Lugares[]
 
   res.status(building == null ? 404 : 200).send(building)
 }) as RequestHandler

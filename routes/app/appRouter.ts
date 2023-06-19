@@ -5,12 +5,12 @@ import { GetLugar, GetLugarAll, GetLugarDependency, GetLugarDependencyAll, PostL
 
 const appRouter = express.Router()
 
-appRouter.get(Routes.GetLugarAll, authRole(UserRole.User), GetLugarAll)
-appRouter.get(Routes.GetLugar, authRole(UserRole.User), GetLugar)
-appRouter.get(Routes.GetLugarDependencyAll, authRole(UserRole.User), GetLugarDependencyAll)
-appRouter.get(Routes.GetLugarDependency, authRole(UserRole.User), GetLugarDependency)
+appRouter.get(Routes.GetBuildingAll, authRole(UserRole.User), GetLugarAll)
+appRouter.get(Routes.GetBuilding, authRole(UserRole.User), GetLugar)
+appRouter.get(Routes.GetDependencyAll, authRole(UserRole.User), GetLugarDependencyAll)
+appRouter.get(Routes.GetDependency, authRole(UserRole.User), GetLugarDependency)
 
-appRouter.put(Routes.PutLugarSensor, authRole(UserRole.Admin), PutLugarSensor)
-appRouter.post(Routes.PostLugarDependency, authRole(UserRole.Admin), PostLugarDependency)
+appRouter.put([Routes.PutSensor], authRole(UserRole.Admin), PutLugarSensor)
+appRouter.post(Routes.PostDependency, authRole(UserRole.Admin), PostLugarDependency)
 
 export default appRouter

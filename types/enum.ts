@@ -38,12 +38,12 @@ export const enum Routes {
   UserData = '/account/userData',
   Logout = '/account/logout',
 
-  PutLugarSensor = '/:buildingType/:buildingName/sensor',
-  PostLugarDependency = '/:buildingType/:buildingName/:dependencyType',
-  GetLugarAll = '/:buildingType',
-  GetLugar = '/:buildingType/:buildingName',
-  GetLugarDependencyAll = '/:buildingType/:buildingName/:dependencyType',
-  GetLugarDependency = '/:buildingType/:buildingName/:dependencyType/:dependencyName'
+  PutSensor = '/sensor',
+  PostDependency = '/:buildingType/:buildingName/:dependencyType',
+  GetBuildingAll = '/:buildingType',
+  GetBuilding = '/:buildingType/:buildingName',
+  GetDependencyAll = '/:buildingType/:buildingName/:dependencyType',
+  GetDependency = '/:buildingType/:buildingName/:dependencyType/:dependencyName'
 }
 
 export type UserRoleString = 'admin' | 'user'
