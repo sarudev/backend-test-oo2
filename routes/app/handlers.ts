@@ -29,7 +29,8 @@ export const GetLugar = (async (req, res, next) => {
     },
     include: {
       historial: true,
-      sensores: true
+      sensores: true,
+      [buildingType === 'edificio' ? 'aulas' : 'estacionamientos']: true
     }
   }) as Lugares[]
 

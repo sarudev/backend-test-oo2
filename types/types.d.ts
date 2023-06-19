@@ -71,8 +71,10 @@ export interface FindBuildingFirst {
     nombre: string
   }
   include?: {
-    sensores: boolean | null
-    historial: boolean | null
+    sensores?: boolean
+    historial?: boolean
+    aulas?: boolean
+    estacionamientos?: boolean
   }
 }
 
@@ -86,9 +88,9 @@ export interface FindDependencyFirst {
     }
   }
   include?: {
-    lugar: boolean | null
-    sensores: boolean | null
-    historial: boolean | null
+    lugar?: boolean
+    sensores?: boolean
+    historial?: boolean
   }
 }
 
