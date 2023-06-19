@@ -34,15 +34,52 @@ const edificios = [
   'José Hernández'
 ]
 
+const parkings = [
+  '29 de Septiembre',
+  'Pablo Nogués',
+  'Comedor',
+  'Canchas'
+]
+
+const espaciosVerdes = [
+  'Manuel Ugarte y Arturo Jauretche',
+  'Néstor Kirchner y Juana Manso'
+]
+
 void (async () => {
   for (const ed of edificios) {
     const edif = await prisma.edificio.create({
       data: {
         nombre: ed,
-        tipo: 'edificio'
+        tipo: 'edificio',
+        luces: Math.random() < 0.33 ? null : Math.random() < 0.5,
+        puertas: Math.random() < 0.33 ? null : Math.random() < 0.5
       }
     })
     console.log(edif)
+  }
+
+  for (const pa of parkings) {
+    const park = await prisma.parking.create({
+      data: {
+        nombre: pa,
+        tipo: 'parking',
+        luces: Math.random() < 0.33 ? null : Math.random() < 0.5
+      }
+    })
+    console.log(park)
+  }
+
+  for (const es of espaciosVerdes) {
+    const espa = await prisma.espacioVerde.create({
+      data: {
+        nombre: es,
+        tipo: 'espacioVerde',
+        luces: Math.random() < 0.33 ? null : Math.random() < 0.5,
+        pastoRegado: Math.random() < 0.33 ? null : Math.random() < 0.5
+      }
+    })
+    console.log(espa)
   }
 
   const edif = await prisma.edificio.findFirst({
@@ -57,6 +94,9 @@ void (async () => {
     data: {
       nombre: '11',
       tipo: 'aula',
+      cortinas: null,
+      luces: true,
+      puertas: false,
       lugar: {
         connect: {
           id: edif!.id

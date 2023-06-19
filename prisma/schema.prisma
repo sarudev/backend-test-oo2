@@ -54,10 +54,12 @@ model Historial {
 }
 
 model EspacioVerde {
-  id       Int      @id @default(autoincrement())
-  nombre   String   @unique
-  tipo     String
-  sensores Sensor[]
+  id          Int      @id @default(autoincrement())
+  nombre      String   @unique
+  tipo        String
+  sensores    Sensor[]
+  luces       Boolean?
+  pastoRegado Boolean?
 
   historial Historial[]
 }
@@ -68,6 +70,8 @@ model Edificio {
   tipo     String
   sensores Sensor[]
   aulas    Aula[]
+  luces    Boolean?
+  puertas  Boolean?
 
   historial Historial[]
 }
@@ -79,6 +83,9 @@ model Aula {
   sensores Sensor[]
   lugar    Edificio @relation(fields: [lugarId], references: [id])
   lugarId  Int
+  luces    Boolean?
+  puertas  Boolean?
+  cortinas Boolean?
 
   historial Historial[]
 }
@@ -89,6 +96,7 @@ model Parking {
   tipo             String
   sensores         Sensor[]
   estacionamientos Estacionamiento[]
+  luces            Boolean?
 
   historial Historial[]
 }
@@ -100,6 +108,7 @@ model Estacionamiento {
   sensores Sensor[]
   lugar    Parking  @relation(fields: [lugarId], references: [id])
   lugarId  Int
+  libre    Boolean?
 
   historial Historial[]
 }

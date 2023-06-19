@@ -36,7 +36,14 @@ export const enum Routes {
   Login = '/account/login',
   UserRole = '/account/userRole/:username',
   UserData = '/account/userData',
-  Logout = '/account/logout'
+  Logout = '/account/logout',
+
+  PutLugarSensor = '/:buildingType/:buildingName/sensor',
+  PostLugarDependency = '/:buildingType/:buildingName/:dependencyType',
+  GetLugarAll = '/:buildingType',
+  GetLugar = '/:buildingType/:buildingName',
+  GetLugarDependencyAll = '/:buildingType/:buildingName/:dependencyType',
+  GetLugarDependency = '/:buildingType/:buildingName/:dependencyType/:dependencyName'
 }
 
 export type UserRoleString = 'admin' | 'user'

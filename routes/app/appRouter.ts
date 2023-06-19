@@ -1,20 +1,16 @@
 import express from 'express'
 import { Routes, UserRole } from '../../types/enum'
-import { getEdificio } from './handlers/edificio'
-import { getAula, postAula } from './handlers/aula'
 import { authRole } from './middlewares/jwt'
-import { postAulaSensor } from './handlers/sensor/aula'
-import { postEdificioSensor } from './handlers/sensor/edificio'
-import { toggleSensor } from './handlers/sensor/sensor'
+import { GetLugar, GetLugarAll, GetLugarDependency, GetLugarDependencyAll, PostLugarDependency, PutLugarSensor } from './handlers'
 
 const appRouter = express.Router()
 
-appRouter.get(Routes.GetEdificio, authRole(UserRole.User), getEdificio)
-appRouter.get(Routes.GetAula, authRole(UserRole.User), getAula)
+appRouter.get(Routes.GetLugarAll, authRole(UserRole.User), GetLugarAll)
+appRouter.get(Routes.GetLugar, authRole(UserRole.User), GetLugar)
+appRouter.get(Routes.GetLugarDependencyAll, authRole(UserRole.User), GetLugarDependencyAll)
+appRouter.get(Routes.GetLugarDependency, authRole(UserRole.User), GetLugarDependency)
 
-appRouter.post(Routes.PostAulaSensor, authRole(UserRole.Admin), postAulaSensor)
-appRouter.post(Routes.PostAula, authRole(UserRole.Admin), postAula)
-appRouter.post(Routes.PostEdificioSensor, authRole(UserRole.Admin), postEdificioSensor)
-appRouter.put([Routes.PutEdificioSensor, Routes.PutAulaSensor], authRole(UserRole.Admin), toggleSensor)
+appRouter.put(Routes.PutLugarSensor, authRole(UserRole.Admin), PutLugarSensor)
+appRouter.post(Routes.PostLugarDependency, authRole(UserRole.Admin), PostLugarDependency)
 
 export default appRouter
