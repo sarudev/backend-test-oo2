@@ -45,6 +45,6 @@ export const postEdificioSensor = (async (req, res) => {
       edificioTipo: 'edificio'
     }
   })
-  console.log(sensor)
+
   res.status(201).json(sensor)
 }) as RequestHandler

@@ -3,6 +3,7 @@ import prisma from '../../../prisma/client'
 
 export const getEdificio = (async (req, res) => {
   const { buildingName } = req.params as { buildingName: string | undefined }
+  console.log(buildingName)
   if (buildingName == null) {
     res.status(400).send({ error: '\'buildingName\' is not a string or is missing in request body' })
     return
