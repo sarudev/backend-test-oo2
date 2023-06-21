@@ -78,7 +78,7 @@ model Edificio {
 
 model Aula {
   id       Int      @id @default(autoincrement())
-  nombre   String   @unique
+  nombre   String
   tipo     String
   sensores Sensor[]
   lugar    Edificio @relation(fields: [lugarId], references: [id])
@@ -103,7 +103,7 @@ model Parking {
 
 model Estacionamiento {
   id       Int      @id @default(autoincrement())
-  nombre   String   @unique
+  nombre   String
   tipo     String
   sensores Sensor[]
   lugar    Parking  @relation(fields: [lugarId], references: [id])

@@ -123,7 +123,27 @@ export const PostDependency = (async (req, res, next) => {
   const createDependency = prisma[dependencyType].create as unknown as PrismaDependencyCreate
 
   try {
-    const aula = await createDependency({
+    const findDependency = prisma[dependencyType].findFirst as unknown as PrismaFindDependencyFirst
+
+    const dependencyExist = await findDependency({
+      where: {
+        nombre: dependencyName.replaceAll('-', ' '),
+        lugar: {
+          nombre: buildingName!.replaceAll('-', ' ')
+        }
+      },
+      include: {
+        historial: true,
+        sensores: true,
+        lugar: true
+      }
+    }) as Lugares[]
+
+    if (dependencyExist != null) {
+      return res.status(409).send({ error: 'Dependency already exists in this building' })
+    }
+
+    const dependency = await createDependency({
       data: {
         nombre: dependencyName.replaceAll('-', ' '),
         tipo: dependencyType,
@@ -134,7 +154,7 @@ export const PostDependency = (async (req, res, next) => {
         }
       }
     })
-    res.status(201).json(aula)
+    res.status(201).json(dependency)
   } catch (e: unknown) {
     res.status(409).json((e as PrismaClientUnknownRequestError))
   }
