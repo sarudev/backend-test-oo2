@@ -42,8 +42,11 @@ const parkings = [
 ]
 
 const espaciosVerdes = [
-  'Manuel Ugarte y Arturo Jauretche',
-  'Néstor Kirchner y Juana Manso'
+  'Ortiz y Jauretche',
+  'Macedonio y Ortiz',
+  'Casa del estudiante',
+  'Jauretche y Ugarte',
+  'Manso y Kirchner'
 ]
 
 void (async () => {
